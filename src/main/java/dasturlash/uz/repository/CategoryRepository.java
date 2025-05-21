@@ -16,4 +16,8 @@ public interface CategoryRepository extends CrudRepository<CategoryEntity, Integ
     public int updateCategory(@Param("id") Integer id, @Param("key") String key,
                             @Param("nameUz") String nameUz, @Param("nameRu") String nameRu, @Param("nameEn") String nameEn);
 
+    @Modifying
+    @Transactional
+    @Query("update CategoryEntity set visible = false where id =:id")
+    int delete(@Param("id") Integer id);
 }

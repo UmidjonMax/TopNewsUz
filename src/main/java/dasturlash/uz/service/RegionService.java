@@ -1,5 +1,6 @@
 package dasturlash.uz.service;
 
+
 import dasturlash.uz.dto.RegionDTO;
 import dasturlash.uz.entity.RegionEntity;
 import dasturlash.uz.repository.RegionRepository;
@@ -8,6 +9,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Service
 public class RegionService {
@@ -15,43 +19,52 @@ public class RegionService {
     private RegionRepository regionRepository;
 
     public RegionDTO createRegion(RegionDTO regionDTO) {
-        RegionEntity region = new RegionEntity();
-        region.setOrderNumber(regionDTO.getOrderNumber());
-        region.setNameUz(regionDTO.getNameUz());
-        region.setNameRu(regionDTO.getNameRu());
-        region.setNameEn(regionDTO.getNameEn());
-        region.setKey(regionDTO.getKey());
-        regionRepository.save(region);
-        regionDTO.setId(region.getId());
+        var entity = regionRepository.save(mapToEntity().apply(regionDTO));
+        regionDTO.setId(entity.getId());
         return regionDTO;
     }
 
     public RegionDTO updateRegion(Integer id, RegionDTO dto) {
-        int effectedRows = regionRepository.updateRegion(id, dto.getKey(), dto.getNameUz(), dto.getNameRu(), dto.getNameEn());
-        return dto;
+        RegionEntity entity = regionRepository.findById(id).orElseThrow(RuntimeException::new);
+        regionRepository.updateRegion(id, dto.getKey(), dto.getOrderNumber(), dto.getNameUz(), dto.getNameRu(), dto.getNameEn());
+        return toDTO().apply(entity);
     }
 
     public boolean deleteRegion(Integer id) {
-        regionRepository.deleteById(id);
+        regionRepository.delete(id);
         return true;
     }
 
     public List<RegionDTO> getAllRegions() {
-        Iterable<RegionEntity> regions = regionRepository.findAll();
+        Iterable<RegionEntity> regions = regionRepository.findAllByVisibleIsTrue();
         List<RegionDTO> dtos = new ArrayList<>();
-        regions.forEach(region -> dtos.add(toDTO(region)));
+        regions.forEach(region -> dtos.add(toDTO().apply(region)));
         return dtos;
     }
 
-    public RegionDTO toDTO(RegionEntity regionEntity) {
-        RegionDTO regionDTO = new RegionDTO();
-        regionDTO.setId(regionEntity.getId());
-        regionDTO.setOrderNumber(regionEntity.getOrderNumber());
-        regionDTO.setNameUz(regionEntity.getNameUz());
-        regionDTO.setNameRu(regionEntity.getNameRu());
-        regionDTO.setNameEn(regionEntity.getNameEn());
-        regionDTO.setKey(regionEntity.getKey());
-        regionDTO.setCreatedDate(regionEntity.getCreatedDate());
-        return regionDTO;
+    public Function<RegionEntity, RegionDTO> toDTO() {
+        return regionEntity -> {
+            RegionDTO regionDTO = new RegionDTO();
+            regionDTO.setId(regionEntity.getId());
+            regionDTO.setKey(regionEntity.getKey());
+            regionDTO.setOrderNumber(regionEntity.getOrderNumber());
+            regionDTO.setNameUz(regionEntity.getNameUz());
+            regionDTO.setNameRu(regionEntity.getNameRu());
+            regionDTO.setNameEn(regionEntity.getNameEn());
+            return regionDTO;
+        };
+    }
+
+    public Function<RegionDTO, RegionEntity> mapToEntity() {
+        return regionDTO ->{
+            RegionEntity regionEntity = new RegionEntity();
+            regionEntity.setId(regionDTO.getId());
+            regionEntity.setKey(regionDTO.getKey());
+            regionEntity.setOrderNumber(regionDTO.getOrderNumber());
+            regionEntity.setNameUz(regionDTO.getNameUz());
+            regionEntity.setNameRu(regionDTO.getNameRu());
+            regionEntity.setNameEn(regionDTO.getNameEn());
+            return regionEntity;
+        };
     }
 }

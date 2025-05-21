@@ -16,4 +16,8 @@ public interface SectionRepository extends CrudRepository<SectionEntity, Integer
     public int update(@Param("id") Integer id,@Param("key") String key,
                             @Param("nameUz") String nameUz,@Param("nameRu") String nameRu,@Param("nameEn") String nameEn);
 
+    @Modifying
+    @Transactional
+    @Query("update SectionEntity set visible = false where id =:id")
+    int delete(@Param("id") Integer id);
 }

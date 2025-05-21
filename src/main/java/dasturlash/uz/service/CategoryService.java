@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 public class CategoryService {
@@ -17,14 +18,8 @@ public class CategoryService {
     private CategoryRepository categoryRepository;
 
     public CategoryDTO create(CategoryDTO dto) {
-        CategoryEntity category = new CategoryEntity();
-        category.setOrderNumber(dto.getOrderNumber());
-        category.setNameUz(dto.getNameUz());
-        category.setNameRu(dto.getNameRu());
-        category.setNameEn(dto.getNameEn());
-        category.setKey(dto.getKey());
-        categoryRepository.save(category);
-        dto.setId(category.getId());
+        var entity = categoryRepository.save(mapToEntity().apply(dto));
+        dto.setId(entity.getId());
         return dto;
     }
 
@@ -34,26 +29,40 @@ public class CategoryService {
     }
 
     public boolean delete(Integer id) {
-        categoryRepository.deleteById(id);
+        categoryRepository.delete(id);
         return true;
     }
 
     public List<CategoryDTO> getAll() {
         Iterable<CategoryEntity> categories = categoryRepository.findAll();
         List<CategoryDTO> dtos = new ArrayList<>();
-        categories.forEach(category -> dtos.add(toDTO(category)));
+        categories.forEach(category -> dtos.add(toDTO().apply(category)));
         return dtos;
     }
 
-    public CategoryDTO toDTO(CategoryEntity entity) {
-        CategoryDTO dtos = new CategoryDTO();
-        dtos.setId(entity.getId());
-        dtos.setOrderNumber(entity.getOrderNumber());
-        dtos.setNameUz(entity.getNameUz());
-        dtos.setNameRu(entity.getNameRu());
-        dtos.setNameEn(entity.getNameEn());
-        dtos.setKey(entity.getKey());
-        dtos.setCreatedDate(entity.getCreatedDate());
-        return dtos;
+    public Function<CategoryEntity, CategoryDTO> toDTO() {
+        return categoryEntity -> {
+            CategoryDTO categoryDTO = new CategoryDTO();
+            categoryDTO.setId(categoryEntity.getId());
+            categoryDTO.setKey(categoryEntity.getKey());
+            categoryDTO.setOrderNumber(categoryEntity.getOrderNumber());
+            categoryDTO.setNameUz(categoryEntity.getNameUz());
+            categoryDTO.setNameRu(categoryEntity.getNameRu());
+            categoryDTO.setNameEn(categoryEntity.getNameEn());
+            return categoryDTO;
+        };
+    }
+
+    public Function<CategoryDTO, CategoryEntity> mapToEntity() {
+        return categoryDTO ->{
+            CategoryEntity categoryEntity = new CategoryEntity();
+            categoryEntity.setId(categoryDTO.getId());
+            categoryEntity.setKey(categoryDTO.getKey());
+            categoryEntity.setOrderNumber(categoryDTO.getOrderNumber());
+            categoryEntity.setNameUz(categoryDTO.getNameUz());
+            categoryEntity.setNameRu(categoryDTO.getNameRu());
+            categoryEntity.setNameEn(categoryDTO.getNameEn());
+            return categoryEntity;
+        };
     }
 }

@@ -8,11 +8,20 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface RegionRepository extends CrudRepository<RegionEntity, Integer> {
     @Modifying
     @Transactional
-    @Query("update RegionEntity set key =: key, nameUz =: nameUz, nameRu=: nameRu, nameEn =: nameEn where id =: id")
-    public int updateRegion(@Param("id") Integer id,@Param("key") String key,
+    @Query("update RegionEntity set key =:key,orderNumber =:orderNumber, nameUz =:nameUz, nameRu =:nameRu, nameEn =:nameEn where id =:id")
+     int updateRegion(@Param("id") Integer id,@Param("key") String key,@Param("orderNumber") Integer orderNumber,
                             @Param("nameUz") String nameUz,@Param("nameRu") String nameRu,@Param("nameEn") String nameEn);
+
+    List<RegionEntity> findAllByVisibleIsTrue();
+
+    @Modifying
+    @Transactional
+    @Query("update RegionEntity set visible = false where id =:id")
+    int delete(@Param("id") Integer id);
 }

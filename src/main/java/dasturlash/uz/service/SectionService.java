@@ -1,8 +1,6 @@
 package dasturlash.uz.service;
 
-import dasturlash.uz.dto.CategoryDTO;
 import dasturlash.uz.dto.SectionDTO;
-import dasturlash.uz.entity.CategoryEntity;
 import dasturlash.uz.entity.SectionEntity;
 import dasturlash.uz.repository.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 @Service
 public class SectionService {
@@ -17,14 +16,8 @@ public class SectionService {
     private SectionRepository sectionRepository;
 
     public SectionDTO create(SectionDTO dto) {
-        SectionEntity section = new SectionEntity();
-        section.setOrderNumber(dto.getOrderNumber());
-        section.setNameUz(dto.getNameUz());
-        section.setNameRu(dto.getNameRu());
-        section.setNameEn(dto.getNameEn());
-        section.setKey(dto.getKey());
-        sectionRepository.save(section);
-        dto.setId(section.getId());
+        var entity = sectionRepository.save(mapToEntity().apply(dto));
+        dto.setId(entity.getId());
         return dto;
     }
 
@@ -34,26 +27,40 @@ public class SectionService {
     }
 
     public boolean delete(Integer id) {
-        sectionRepository.deleteById(id);
+        sectionRepository.delete(id);
         return true;
     }
 
     public List<SectionDTO> getAll() {
         Iterable<SectionEntity> sections = sectionRepository.findAll();
         List<SectionDTO> dtos = new ArrayList<>();
-        sections.forEach(section -> dtos.add(toDTO(section)));
+        sections.forEach(section -> dtos.add(toDTO().apply(section)));
         return dtos;
     }
 
-    public SectionDTO toDTO(SectionEntity entity) {
-        SectionDTO dtos = new SectionDTO();
-        dtos.setId(entity.getId());
-        dtos.setOrderNumber(entity.getOrderNumber());
-        dtos.setNameUz(entity.getNameUz());
-        dtos.setNameRu(entity.getNameRu());
-        dtos.setNameEn(entity.getNameEn());
-        dtos.setKey(entity.getKey());
-        dtos.setCreatedDate(entity.getCreatedDate());
-        return dtos;
+    public Function<SectionEntity, SectionDTO> toDTO() {
+        return sectionEntity -> {
+            SectionDTO sectionDTO = new SectionDTO();
+            sectionDTO.setId(sectionEntity.getId());
+            sectionDTO.setKey(sectionEntity.getKey());
+            sectionDTO.setOrderNumber(sectionEntity.getOrderNumber());
+            sectionDTO.setNameUz(sectionEntity.getNameUz());
+            sectionDTO.setNameRu(sectionEntity.getNameRu());
+            sectionDTO.setNameEn(sectionEntity.getNameEn());
+            return sectionDTO;
+        };
+    }
+
+    public Function<SectionDTO, SectionEntity> mapToEntity() {
+        return sectionDTO ->{
+            SectionEntity sectionEntity = new SectionEntity();
+            sectionEntity.setId(sectionDTO.getId());
+            sectionEntity.setKey(sectionDTO.getKey());
+            sectionEntity.setOrderNumber(sectionDTO.getOrderNumber());
+            sectionEntity.setNameUz(sectionDTO.getNameUz());
+            sectionEntity.setNameRu(sectionDTO.getNameRu());
+            sectionEntity.setNameEn(sectionDTO.getNameEn());
+            return sectionEntity;
+        };
     }
 }
