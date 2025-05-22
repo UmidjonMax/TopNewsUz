@@ -16,12 +16,18 @@ public class RegionEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @Column
     private Integer orderNumber;
+    @Column
     private String nameUz;
+    @Column
     private String nameRu;
+    @Column
     private String nameEn;
+    @Column(unique = true)
     private String key;
-    private boolean visible;
+    @Column
+    private boolean visible = true;
     @CreationTimestamp
     private LocalDateTime createdDate;
 
