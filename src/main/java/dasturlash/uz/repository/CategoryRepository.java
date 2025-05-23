@@ -8,16 +8,23 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+import java.util.Optional;
+
 @Repository
 public interface CategoryRepository extends CrudRepository<CategoryEntity, Integer> {
-    @Modifying
-    @Transactional
-    @Query("update CategoryEntity set key =: key, nameUz =: nameUz, nameRu=: nameRu, nameEn =: nameEn where id =: id")
-    public int updateCategory(@Param("id") Integer id, @Param("key") String key,
-                            @Param("nameUz") String nameUz, @Param("nameRu") String nameRu, @Param("nameEn") String nameEn);
+    @Query("from CategoryEntity where visible = true order by orderNumber asc")
+    List<CategoryEntity> findAllByOrderSorted();
+
 
     @Modifying
     @Transactional
-    @Query("update CategoryEntity set visible = false where id =:id")
-    int delete(@Param("id") Integer id);
+    @Query("update CategoryEntity set visible = false where id = ?1")
+    int updateVisible( Integer id);
+
+    Optional<CategoryEntity> findByKey(String key);
+
+    Optional<CategoryEntity> findByIdAndVisibleIsTrue(Integer id);
+
+
 }

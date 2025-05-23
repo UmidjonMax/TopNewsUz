@@ -1,0 +1,33 @@
+### Get Categories
+GET localhost:7075/v1/category
+
+### Create category
+POST localhost:7075/v1/category
+Content-Type: application/json
+
+{
+  "orderNumber": 3,
+  "key": "foreign",
+  "nameUz": "Jahon",
+  "nameRu": "Мир",
+  "nameEn": "World"
+}
+
+### Update Category
+PUT localhost:7075/v1/category/3
+Content-Type: application/json
+
+{
+  "orderNumber": 5,
+  "key": "world",
+  "nameUz": "Jahon",
+  "nameRu": "Мир",
+  "nameEn": "World"
+}
+
+### Delete Category
+DELETE localhost:7075/v1/category/4
+
+### Get By Language
+GET localhost:7075/v1/category/lang
+Accept-Language: UZ
