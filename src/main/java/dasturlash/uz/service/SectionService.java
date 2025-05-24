@@ -2,12 +2,15 @@ package dasturlash.uz.service;
 
 import dasturlash.uz.dto.SectionDTO;
 import dasturlash.uz.entity.SectionEntity;
+import dasturlash.uz.enums.AppLanguageEnum;
+import dasturlash.uz.exceptions.AppBadException;
 import dasturlash.uz.repository.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Optional;
 import java.util.function.Function;
 
 @Service
@@ -16,25 +19,51 @@ public class SectionService {
     private SectionRepository sectionRepository;
 
     public SectionDTO create(SectionDTO dto) {
+        Optional<SectionEntity> section = sectionRepository.findByKey(dto.getKey());
+        if (section.isPresent()) {
+            throw new AppBadException("Section already exists");
+        }
         var entity = sectionRepository.save(mapToEntity().apply(dto));
         dto.setId(entity.getId());
+        dto.setCreatedDate(entity.getCreatedDate());
         return dto;
     }
 
     public SectionDTO update(Integer id, SectionDTO dto) {
-        int effectedRows = sectionRepository.update(id, dto.getKey(), dto.getNameUz(), dto.getNameRu(), dto.getNameEn());
+        Optional<SectionEntity> section = sectionRepository.findByIdAndVisibleIsTrue(id);
+        if (section.isEmpty()) {
+            throw new AppBadException("Section does not exist");
+        }
+        Optional<SectionEntity> keyOpt = sectionRepository.findByKey(dto.getKey());
+        if (keyOpt.isPresent() && !id.equals(keyOpt.get().getId())) {
+            throw new AppBadException("Section Key already exists");
+        }
+        SectionEntity entity = section.get();
+        entity.setOrderNumber(dto.getOrderNumber());
+        entity.setNameUz(dto.getNameUz());
+        entity.setNameRu(dto.getNameRu());
+        entity.setNameEn(dto.getNameEn());
+        entity.setKey(dto.getKey());
+        sectionRepository.save(entity);
+        dto.setId(id);
         return dto;
     }
 
-    public boolean delete(Integer id) {
-        sectionRepository.delete(id);
-        return true;
+    public Boolean delete(Integer id) {
+        return sectionRepository.updateVisible(id) == 1;
     }
 
     public List<SectionDTO> getAll() {
-        Iterable<SectionEntity> sections = sectionRepository.findAll();
-        List<SectionDTO> dtos = new ArrayList<>();
+        Iterable<SectionEntity> sections = sectionRepository.findAllByOrderSorted();
+        List<SectionDTO> dtos = new LinkedList<>();
         sections.forEach(section -> dtos.add(toDTO().apply(section)));
+        return dtos;
+    }
+
+    public List<SectionDTO> getAllByLang(AppLanguageEnum lang) {
+        Iterable<SectionEntity> sections = sectionRepository.findAllByOrderSorted();
+        List<SectionDTO> dtos = new LinkedList<>();
+        sections.forEach(section -> dtos.add(toLangResponseDto(lang, section)));
         return dtos;
     }
 
@@ -54,13 +83,30 @@ public class SectionService {
     public Function<SectionDTO, SectionEntity> mapToEntity() {
         return sectionDTO ->{
             SectionEntity sectionEntity = new SectionEntity();
-            sectionEntity.setId(sectionDTO.getId());
-            sectionEntity.setKey(sectionDTO.getKey());
             sectionEntity.setOrderNumber(sectionDTO.getOrderNumber());
             sectionEntity.setNameUz(sectionDTO.getNameUz());
             sectionEntity.setNameRu(sectionDTO.getNameRu());
             sectionEntity.setNameEn(sectionDTO.getNameEn());
+            sectionEntity.setKey(sectionDTO.getKey());
             return sectionEntity;
         };
+    }
+
+    private SectionDTO toLangResponseDto(AppLanguageEnum lang, SectionEntity entity) {
+        SectionDTO dto = new SectionDTO();
+        dto.setId(entity.getId());
+        dto.setKey(entity.getKey());
+        switch (lang) {
+            case EN:
+                dto.setName(entity.getNameEn());
+                break;
+            case RU:
+                dto.setName(entity.getNameRu());
+                break;
+            case UZ:
+                dto.setName(entity.getNameUz());
+                break;
+        }
+        return dto;
     }
 }

@@ -14,11 +14,11 @@ Content-Type: application/json
 }
 
 ### Update Category
-PUT localhost:7075/v1/category/3
+PUT localhost:7075/v1/category/1
 Content-Type: application/json
 
 {
-  "orderNumber": 5,
+  "orderNumber": 3,
   "key": "world",
   "nameUz": "Jahon",
   "nameRu": "Мир",
@@ -30,4 +30,4 @@ DELETE localhost:7075/v1/category/4
 
 ### Get By Language
 GET localhost:7075/v1/category/lang
-Accept-Language: UZ
+Accept-Language: EN

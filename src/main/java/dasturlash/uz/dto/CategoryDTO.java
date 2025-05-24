@@ -1,5 +1,6 @@
 package dasturlash.uz.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -7,7 +8,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class CategoryDTO {
     private Integer id;
     @NotNull(message = "orderNumber required")
@@ -22,6 +23,15 @@ public class CategoryDTO {
     @NotNull(message = "categoryKey required")
     private String key;
     private LocalDateTime createdDate;
+    private String name;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Integer getId() {
         return id;

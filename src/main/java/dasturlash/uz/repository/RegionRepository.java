@@ -9,19 +9,19 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface RegionRepository extends CrudRepository<RegionEntity, Integer> {
+    @Query("from RegionEntity where visible = true order by orderNumber asc")
+    List<RegionEntity> findAllSorted();
+
+    Optional<RegionEntity> findAllByIdAndVisibleIsTrue(Integer id);
+
+    Optional<RegionEntity> findAllByKey(String key);
+
     @Modifying
     @Transactional
-    @Query("update RegionEntity set key =:key,orderNumber =:orderNumber, nameUz =:nameUz, nameRu =:nameRu, nameEn =:nameEn where id =:id")
-     int updateRegion(@Param("id") Integer id,@Param("key") String key,@Param("orderNumber") Integer orderNumber,
-                            @Param("nameUz") String nameUz,@Param("nameRu") String nameRu,@Param("nameEn") String nameEn);
-
-    List<RegionEntity> findAllByVisibleIsTrue();
-
-    @Modifying
-    @Transactional
-    @Query("update RegionEntity set visible = false where id =:id")
-    int delete(@Param("id") Integer id);
+    @Query("update RegionEntity set visible = false where id =?1")
+    int updateVisible(Integer id);
 }

@@ -1,16 +1,13 @@
 package dasturlash.uz.service;
 
 import dasturlash.uz.dto.CategoryDTO;
-import dasturlash.uz.dto.RegionDTO;
 import dasturlash.uz.entity.CategoryEntity;
-import dasturlash.uz.entity.RegionEntity;
 import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.exceptions.AppBadException;
 import dasturlash.uz.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
@@ -87,7 +84,6 @@ public class CategoryService {
     public Function<CategoryDTO, CategoryEntity> mapToEntity() {
         return categoryDTO -> {
             CategoryEntity categoryEntity = new CategoryEntity();
-            categoryEntity.setId(categoryDTO.getId());
             categoryEntity.setKey(categoryDTO.getKey());
             categoryEntity.setOrderNumber(categoryDTO.getOrderNumber());
             categoryEntity.setNameUz(categoryDTO.getNameUz());
@@ -103,13 +99,13 @@ public class CategoryService {
         dto.setKey(entity.getKey());
         switch (lang) {
             case EN:
-                dto.setNameEn(entity.getNameEn());
+                dto.setName(entity.getNameEn());
                 break;
             case RU:
-                dto.setNameRu(entity.getNameRu());
+                dto.setName(entity.getNameRu());
                 break;
             case UZ:
-                dto.setNameUz(entity.getNameUz());
+                dto.setName(entity.getNameUz());
                 break;
         }
         return dto;

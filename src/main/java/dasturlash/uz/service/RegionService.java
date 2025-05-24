@@ -3,42 +3,68 @@ package dasturlash.uz.service;
 
 import dasturlash.uz.dto.RegionDTO;
 import dasturlash.uz.entity.RegionEntity;
+import dasturlash.uz.enums.AppLanguageEnum;
+import dasturlash.uz.exceptions.AppBadException;
 import dasturlash.uz.repository.RegionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Service
 public class RegionService {
     @Autowired
     private RegionRepository regionRepository;
 
-    public RegionDTO createRegion(RegionDTO regionDTO) {
+    public RegionDTO create(RegionDTO regionDTO) {
+        Optional<RegionEntity> region = regionRepository.findAllByKey(regionDTO.getKey());
+        if (region.isPresent()) {
+            throw new AppBadException("Region already exists");
+        }
         var entity = regionRepository.save(mapToEntity().apply(regionDTO));
         regionDTO.setId(entity.getId());
+        regionDTO.setCreatedDate(entity.getCreatedDate());
         return regionDTO;
     }
 
-    public RegionDTO updateRegion(Integer id, RegionDTO dto) {
-        RegionEntity entity = regionRepository.findById(id).orElseThrow(RuntimeException::new);
-        regionRepository.updateRegion(id, dto.getKey(), dto.getOrderNumber(), dto.getNameUz(), dto.getNameRu(), dto.getNameEn());
-        return toDTO().apply(entity);
+    public RegionDTO update(Integer id, RegionDTO dto) {
+        Optional<RegionEntity> region = regionRepository.findAllByIdAndVisibleIsTrue(id);
+        if (region.isEmpty()){
+            throw new AppBadException("Region not found");
+        }
+        Optional<RegionEntity> keyOptional = regionRepository.findAllByKey(dto.getKey());
+        if (keyOptional.isPresent() && !id.equals(keyOptional.get().getId())) {
+            throw new AppBadException("Region key already exists");
+        }
+        RegionEntity entity = region.get();
+        entity.setOrderNumber(dto.getOrderNumber());
+        entity.setNameUz(dto.getNameUz());
+        entity.setNameRu(dto.getNameRu());
+        entity.setNameEn(dto.getNameEn());
+        entity.setKey(dto.getKey());
+        regionRepository.save(entity);
+        dto.setId(id);
+        return dto;
     }
 
-    public boolean deleteRegion(Integer id) {
-        regionRepository.delete(id);
-        return true;
+    public boolean delete(Integer id) {
+        return regionRepository.updateVisible(id) == 1;
     }
 
     public List<RegionDTO> getAllRegions() {
-        Iterable<RegionEntity> regions = regionRepository.findAllByVisibleIsTrue();
-        List<RegionDTO> dtos = new ArrayList<>();
+        Iterable<RegionEntity> regions = regionRepository.findAllSorted();
+        List<RegionDTO> dtos = new LinkedList<>();
         regions.forEach(region -> dtos.add(toDTO().apply(region)));
+        return dtos;
+    }
+
+    public List<RegionDTO> getAllByLang(AppLanguageEnum lang){
+        Iterable<RegionEntity> regions = regionRepository.findAllSorted();
+        List<RegionDTO> dtos = new LinkedList<>();
+        regions.forEach(region -> dtos.add(toLangResponseDto(lang, region)));
         return dtos;
     }
 
@@ -58,13 +84,30 @@ public class RegionService {
     public Function<RegionDTO, RegionEntity> mapToEntity() {
         return regionDTO ->{
             RegionEntity regionEntity = new RegionEntity();
-            regionEntity.setId(regionDTO.getId());
-            regionEntity.setKey(regionDTO.getKey());
             regionEntity.setOrderNumber(regionDTO.getOrderNumber());
             regionEntity.setNameUz(regionDTO.getNameUz());
             regionEntity.setNameRu(regionDTO.getNameRu());
             regionEntity.setNameEn(regionDTO.getNameEn());
+            regionEntity.setKey(regionDTO.getKey());
             return regionEntity;
         };
+    }
+
+    private RegionDTO toLangResponseDto(AppLanguageEnum lang, RegionEntity entity) {
+        RegionDTO dto = new RegionDTO();
+        dto.setId(entity.getId());
+        dto.setKey(entity.getKey());
+        switch (lang) {
+            case EN:
+                dto.setName(entity.getNameEn());
+                break;
+            case RU:
+                dto.setName(entity.getNameRu());
+                break;
+            case UZ:
+                dto.setName(entity.getNameUz());
+                break;
+        }
+        return dto;
     }
 }
