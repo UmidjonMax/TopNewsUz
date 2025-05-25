@@ -32,4 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 /topnews.uz-talablar.txt
-/src/main/resources/Region.http
+/src/main/resources/https/Region.http

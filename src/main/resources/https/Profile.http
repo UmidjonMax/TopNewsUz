@@ -1,0 +1,29 @@
+### Create
+POST localhost:7075/v1/profile
+Content-Type: application/json
+
+{
+  "name": "Toshmat",
+  "surname": "Toshmatov",
+  "username": "toshmat@gmail.com",
+  "password": "12345",
+  "rolesList": [
+    "ROLE_USER",
+    "ROLE_ADMIN"
+  ]
+}
+
+
+### Update
+PUT localhost:7075/v1/region
+Content-Type: application/json
+
+{
+  "name": "Toshmat",
+  "surname": "Toshmatov",
+  "username": "toshmat@gmail.com",
+  "rolesList": [
+    "ROLE_USER",
+    "ROLE_MODERATOR"
+  ]
+}
