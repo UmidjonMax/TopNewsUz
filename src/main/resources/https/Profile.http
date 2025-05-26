@@ -3,19 +3,27 @@ POST localhost:7075/v1/profile
 Content-Type: application/json
 
 {
-  "name": "Toshmat",
-  "surname": "Toshmatov",
-  "username": "toshmat@gmail.com",
-  "password": "12345",
-  "rolesList": [
-    "ROLE_USER",
-    "ROLE_ADMIN"
+  "name": "Axmad",
+  "surname": "Uralov",
+  "username": "axa@gmail.com",
+  "password": "axagotovit",
+  "roleList": [
+    "ROLE_USER"
   ]
+}
+
+### Login
+POST localhost:7075/v1/profile/login
+Content-Type: application/json
+
+{
+  "username": "+998900031904",
+  "password": "190204"
 }
 
 
 ### Update
-PUT localhost:7075/v1/region
+PUT localhost:7075/v1/profile/update
 Content-Type: application/json
 
 {

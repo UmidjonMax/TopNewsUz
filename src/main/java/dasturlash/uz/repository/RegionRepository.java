@@ -24,4 +24,6 @@ public interface RegionRepository extends CrudRepository<RegionEntity, Integer> 
     @Transactional
     @Query("update RegionEntity set visible = false where id =?1")
     int updateVisible(Integer id);
+
+
 }
