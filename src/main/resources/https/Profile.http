@@ -3,14 +3,17 @@ POST localhost:7075/v1/profile
 Content-Type: application/json
 
 {
-  "name": "Axmad",
-  "surname": "Uralov",
-  "username": "axa@gmail.com",
-  "password": "axagotovit",
+  "name": "Elbek",
+  "surname": "Kiselev",
+  "username": "elka@gmail.com",
+  "password": "2345",
   "roleList": [
     "ROLE_USER"
   ]
 }
+
+### Get All
+GET localhost:7075/v1/profile/page?page=1&size=3
 
 ### Login
 POST localhost:7075/v1/profile/login
