@@ -61,6 +61,8 @@ public class AuthService {
         return  "Tasdiqlash kodi ketdi";
     }
 
+    public
+
     public String regEmailVerification(String jwt) {
         JwtDTO jwtDTO = JWTUtil.decode(jwt); // decode qilish
         String username = jwtDTO.getUsername();
