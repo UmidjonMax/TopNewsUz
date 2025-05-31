@@ -1,0 +1,17 @@
+### Create Article
+POST localhost:7075/v1/article
+Content-Type: application/json
+
+{
+  "title": "SHOK XABAR😱",
+  "description": "KO'RIB XAYRON QOLASIZ",
+  "content": "CHEKKA QISHLOQDA SIGIR 3 BOLA TUG'DI",
+  "regionId": 1,
+  "categoryList": [
+    {"id" : 1},
+    {"id" : 2}
+  ],
+  "sectionList": [
+    {"id": 1}
+  ]
+}

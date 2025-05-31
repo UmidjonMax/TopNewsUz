@@ -3,8 +3,11 @@ POST localhost:7075/v1/auth/registration
 Content-Type: application/json
 
 {
-  "name": "Ozodbek",
-  "surname": "Jalilov",
-  "username": "gocs09442@gmail.com",
+  "name": "Umidjon",
+  "surname": "Makhmudov",
+  "username": "umidjonmax0001@gmail.com",
   "password": "12345"
 }
+
+### Verify
+POST localhost:7075/v1/auth/verify?email=gocs09442@gmail.com&code=95010

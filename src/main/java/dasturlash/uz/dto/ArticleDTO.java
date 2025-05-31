@@ -24,8 +24,8 @@ public class ArticleDTO {
     private Boolean visible;
     private Integer views;
 
-    private List<Integer> categoryList;
-    private List<Integer> sectionList;
+    private List<CategoryDTO> categoryList;
+    private List<SectionDTO> sectionList;
 
     public UUID getId() {
         return id;
@@ -131,19 +131,19 @@ public class ArticleDTO {
         this.views = views;
     }
 
-    public List<Integer> getCategoryList() {
+    public List<CategoryDTO> getCategoryList() {
         return categoryList;
     }
 
-    public void setCategoryList(List<Integer> categoryList) {
+    public void setCategoryList(List<CategoryDTO> categoryList) {
         this.categoryList = categoryList;
     }
 
-    public List<Integer> getSectionList() {
+    public List<SectionDTO> getSectionList() {
         return sectionList;
     }
 
-    public void setSectionList(List<Integer> sectionList) {
+    public void setSectionList(List<SectionDTO> sectionList) {
         this.sectionList = sectionList;
     }
 }

@@ -15,6 +15,8 @@ public class ArticleService {
     private ArticleRepository articleRepository;
     @Autowired
     private ArticleSectionService articlesectionService;
+    @Autowired
+    private ArticleCategoryService articleCategoryService;
 
     public ArticleDTO create(ArticleDTO articleDTO) {
         Optional<ArticleEntity> optional = articleRepository.findByTitleAndVisibleIsTrue(articleDTO.getTitle());
@@ -26,7 +28,22 @@ public class ArticleService {
         articleEntity.setDescription(articleDTO.getDescription());
         articleEntity.setContent(articleDTO.getContent());
         articleEntity.setRegionId(articleDTO.getRegionId());
-//        articlesectionService.merge(articleEntity.getId(), articleDTO.getSectionList());
+        articleRepository.save(articleEntity);
+        articleCategoryService.merge(articleEntity.getId(), articleDTO.getCategoryList());
+        articlesectionService.merge(articleEntity.getId(), articleDTO.getSectionList());
+        ArticleDTO response = toDTO(articleEntity);
+        response.setSectionList(articleDTO.getSectionList());
+        response.setCategoryList(articleDTO.getCategoryList());
+        return response;
+    }
+
+    public ArticleDTO toDTO(ArticleEntity articleEntity) {
+        ArticleDTO articleDTO = new ArticleDTO();
+        articleDTO.setId(articleEntity.getId());
+        articleDTO.setTitle(articleEntity.getTitle());
+        articleDTO.setDescription(articleEntity.getDescription());
+        articleDTO.setContent(articleEntity.getContent());
+        articleDTO.setRegionId(articleEntity.getRegionId());
         return articleDTO;
     }
 }
