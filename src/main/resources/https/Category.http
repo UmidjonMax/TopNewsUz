@@ -6,11 +6,11 @@ POST localhost:7075/v1/category
 Content-Type: application/json
 
 {
-  "orderNumber": 3,
-  "key": "foreign",
-  "nameUz": "Jahon",
-  "nameRu": "Мир",
-  "nameEn": "World"
+  "orderNumber": 1,
+  "key": "farm",
+  "nameUz": "Ferma",
+  "nameRu": "Ферма",
+  "nameEn": "Farm"
 }
 
 ### Update Category

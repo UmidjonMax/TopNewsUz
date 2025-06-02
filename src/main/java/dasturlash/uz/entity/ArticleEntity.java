@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
@@ -12,6 +13,7 @@ import java.util.UUID;
 @Table(name = "article")
 public class ArticleEntity {
     @Id
+    @GeneratedValue(generator = "UUID")
     private UUID id;
     private String title;
     private String description;
@@ -37,9 +39,9 @@ public class ArticleEntity {
     private Integer readTime;
     @Column(name = "created_date")
     @CreationTimestamp
-    private LocalDate createdDate;
+    private LocalDateTime createdDate;
     @Column(name = "published_date")
-    private LocalDate publishedDate;
+    private LocalDateTime publishedDate;
     private Boolean visible = true;
     private Integer views = 0;
     @OneToMany(mappedBy = "article")
@@ -151,19 +153,19 @@ public class ArticleEntity {
         this.readTime = readTime;
     }
 
-    public LocalDate getCreatedDate() {
+    public LocalDateTime getCreatedDate() {
         return createdDate;
     }
 
-    public void setCreatedDate(LocalDate createdDate) {
+    public void setCreatedDate(LocalDateTime createdDate) {
         this.createdDate = createdDate;
     }
 
-    public LocalDate getPublishedDate() {
+    public LocalDateTime getPublishedDate() {
         return publishedDate;
     }
 
-    public void setPublishedDate(LocalDate publishedDate) {
+    public void setPublishedDate(LocalDateTime publishedDate) {
         this.publishedDate = publishedDate;
     }
 

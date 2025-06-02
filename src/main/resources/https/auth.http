@@ -9,5 +9,11 @@ Content-Type: application/json
   "password": "12345"
 }
 
-### Verify
-POST localhost:7075/v1/auth/verify?email=gocs09442@gmail.com&code=95010
+### Login
+POST localhost:7075/v1/auth/login
+Content-Type: application/json
+
+{
+  "username": "umidjonmax0001@gmail.com",
+  "password": "12345"
+}

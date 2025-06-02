@@ -6,6 +6,8 @@ import lombok.AccessLevel;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.List;
+
 @Entity
 @Table(name = "profile")
 public class ProfileEntity {
@@ -37,6 +39,17 @@ public class ProfileEntity {
 
     @CreationTimestamp
     private LocalDateTime createdDate;
+
+    @OneToMany(mappedBy = "profile")
+    private List<ProfileRoleEntity> roleList;
+
+    public List<ProfileRoleEntity> getRoleList() {
+        return roleList;
+    }
+
+    public void setRoleList(List<ProfileRoleEntity> roleList) {
+        this.roleList = roleList;
+    }
 
     public Integer getId() {
         return id;

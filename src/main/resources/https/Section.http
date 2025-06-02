@@ -1,0 +1,14 @@
+### Create Section
+POST localhost:7075/v1/section
+Content-Type: application/json
+
+{
+  "orderNumber": 2,
+  "key": "chosen",
+  "nameUz": "Tanlangan",
+  "nameRu": "Выбранный",
+  "nameEn": "Chosen"
+}
+
+### Get
+GET localhost:7075/v1/section

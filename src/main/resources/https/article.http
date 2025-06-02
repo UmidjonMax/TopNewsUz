@@ -3,9 +3,9 @@ POST localhost:7075/v1/article
 Content-Type: application/json
 
 {
-  "title": "SHOK XABAR😱",
-  "description": "KO'RIB XAYRON QOLASIZ",
-  "content": "CHEKKA QISHLOQDA SIGIR 3 BOLA TUG'DI",
+  "title": "DAXSHAT XABAR😨",
+  "description": "TELEVIDENIYA QAYERGA QARAYABTI",
+  "content": "JUNIOR DASTURCHI ISHGA KIRIB KETTI",
   "regionId": 1,
   "categoryList": [
     {"id" : 1},
@@ -14,4 +14,30 @@ Content-Type: application/json
   "sectionList": [
     {"id": 1}
   ]
+}
+
+###Update
+PUT localhost:7075/v1/article/ca53c14a-f08c-4104-96b2-81ed96dab139
+Content-Type: application/json
+
+{
+  "title": "DAXSHAT XABAR😨",
+  "description": "TLIVIDENIYA QERA QARAYABTI",
+  "content": "JUNIOR DASTURCHI ISHGA KIRIB KETTI",
+  "regionId": 1,
+  "categoryList": [
+    {"id" : 1}
+  ],
+  "sectionList": [
+    {"id": 1},
+    {"id": 2}
+  ]
+}
+
+### Change Status
+PUT localhost:7075/v1/article/status
+Content-Type: application/json
+
+{
+  ""
 }

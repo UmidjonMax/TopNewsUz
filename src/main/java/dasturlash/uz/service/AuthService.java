@@ -1,23 +1,22 @@
 package dasturlash.uz.service;
 
-import dasturlash.uz.dto.CodeInfoDTO;
 import dasturlash.uz.dto.JwtDTO;
 import dasturlash.uz.dto.auth.RegistrationDTO;
+import dasturlash.uz.dto.profile.ProfileLoginDTO;
+import dasturlash.uz.dto.profile.ProfileUpdateDTO;
 import dasturlash.uz.entity.ProfileEntity;
+import dasturlash.uz.entity.ProfileRoleEntity;
 import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.enums.ProfileStatusEnum;
 import dasturlash.uz.exceptions.AppBadException;
 import dasturlash.uz.repository.ProfileRepository;
 import dasturlash.uz.util.JWTUtil;
-import dasturlash.uz.util.RandomUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class AuthService {
@@ -32,6 +31,8 @@ public class AuthService {
     private EmailSenderService emailSenderService;
     @Autowired
     private EmailHistoryService emailHistoryService;
+    @Autowired
+    private JWTUtil jwtUtil;
 
     public String register(RegistrationDTO dto){
         Optional<ProfileEntity> existOpt = profileRepository.findByUsernameAndVisibleIsTrue(dto.getUsername());
@@ -61,7 +62,32 @@ public class AuthService {
         return  "Tasdiqlash kodi ketdi";
     }
 
-    public
+    public ProfileUpdateDTO login(ProfileLoginDTO dto){
+        Optional<ProfileEntity> existOpt = profileRepository.findByUsernameAndVisibleIsTrue(dto.getUsername());
+        if(existOpt.isEmpty()){
+            throw new AppBadException("Username or password is incorrect");
+        }
+        ProfileEntity existProfile = existOpt.get();
+        if (!bCryptPasswordEncoder.matches(dto.getPassword(), existProfile.getPassword())){
+            throw new AppBadException("Username or password is incorrect");
+        }
+        if (existProfile.getStatus().equals(ProfileStatusEnum.BLOCKED)){
+            throw new AppBadException("Username is blocked");
+        }
+        if (existProfile.getStatus().equals(ProfileStatusEnum.NOT_ACTIVE)){
+            throw new AppBadException("Activate your profile");
+        }
+        ProfileUpdateDTO profiledto = new ProfileUpdateDTO();
+        profiledto.setName(existProfile.getName());
+        profiledto.setSurname(existProfile.getSurname());
+        profiledto.setUsername(existProfile.getUsername());
+        List<ProfileRoleEnum> roles = existProfile.getRoleList()
+                .stream()
+                .map(ProfileRoleEntity::getRoles)
+                .collect(Collectors.toList());
+        profiledto.setRoleList(roles);
+        return profiledto;
+    }
 
     public String regEmailVerification(String jwt) {
         JwtDTO jwtDTO = JWTUtil.decode(jwt); // decode qilish
