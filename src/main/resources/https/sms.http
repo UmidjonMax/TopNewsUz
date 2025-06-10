@@ -1,0 +1,8 @@
+### LOGIN
+POST https://notify.eskiz.uz/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "umidjonmax0001@gmail.com",
+  "password": "O4lJZv07qEPLjWVgtVFxMH4gN61SQQwFNIIB1yln"
+}

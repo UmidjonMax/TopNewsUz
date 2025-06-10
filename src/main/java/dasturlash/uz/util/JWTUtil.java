@@ -16,6 +16,30 @@ public class JWTUtil {
     private static final int tokenLiveTime = 1000 * 3600 * 24;
     private static final String secretKey = "MzJbay1qaHVkb3ktY29tcGxleC1zZWNyZXQta2V5LXN0cmluZw==";
 
+    public static String encodeUsername(String username) {
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("username", username);
+        return Jwts
+                .builder()
+                .claims(claims)
+                .subject(username)
+                .issuedAt(new Date(System.currentTimeMillis()))
+                .expiration(new Date(System.currentTimeMillis() + tokenLiveTime))
+                .compact();
+    }
+
+    public static JwtDTO decodeUsername(String token) {
+        Claims claims = Jwts
+                .parser()
+                .verifyWith(getSecretKey())
+                .build()
+                .parseSignedClaims(token)
+                .getPayload();
+        String username = claims.getSubject();
+        JwtDTO jwtDTO = new JwtDTO();
+        jwtDTO.setUsername(username);
+        return jwtDTO;
+    }
     public static String encode(String username, Integer code){
         Map<String, Object> claims = new HashMap<>();
         claims.put("username", username);

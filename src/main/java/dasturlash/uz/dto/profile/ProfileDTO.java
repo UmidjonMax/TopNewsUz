@@ -23,6 +23,15 @@ public class ProfileDTO {
     private List<ProfileRoleEnum> roleList;
     private LocalDateTime createdDate;
     private String photoId;
+    private String jwt;
+
+    public String getJwt() {
+        return jwt;
+    }
+
+    public void setJwt(String jwt) {
+        this.jwt = jwt;
+    }
 
     public Integer getId() {
         return id;

@@ -1,0 +1,14 @@
+### createa attach
+POST http://localhost:7075/attach/upload
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="file"; filename="mvp.jpg"
+
+< C:\Users\Admin\Desktop\mvp.jpg
+
+### Open
+GET http://localhost:7075/attach/open/54ecf7c0-952c-4609-82f7-4b03a328f8ce.jpg
+
+### Download
+GET http://localhost:7075/attach/download/54ecf7c0-952c-4609-82f7-4b03a328f8ce.jpg

@@ -9,6 +9,17 @@ public class JwtDTO {
         this.code = code;
     }
 
+    public JwtDTO() {
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setCode(Integer code) {
+        this.code = code;
+    }
+
     public String getUsername() {
         return username;
     }
