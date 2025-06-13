@@ -25,7 +25,7 @@ public class ArticleController {
     public ResponseEntity<Boolean> delete(@PathVariable UUID id) {
         return ResponseEntity.ok(articleService.delete(id));
     }
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<ArticleShortInfoDTO> update(@PathVariable("id") UUID id, @Valid @RequestBody ArticleDTO articleDTO) {
         return ResponseEntity.ok(articleService.update(id,articleDTO));
     }

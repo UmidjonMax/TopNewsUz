@@ -4,13 +4,14 @@ import dasturlash.uz.dto.AttachDTO;
 import dasturlash.uz.service.AttachService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 @RestController
-@RequestMapping("/attach")
+@RequestMapping("/v1/attach")
 public class AttachController {
     @Autowired
     private AttachService attachService;
@@ -27,6 +28,11 @@ public class AttachController {
         return ResponseEntity.ok(attachService.upload(file));
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable String id) {
+        return ResponseEntity.ok(attachService.deletebyId(id));
+    }
+
     @GetMapping("/open/{fileId}")
     public ResponseEntity<Resource> open(@PathVariable String fileId) throws Exception {
         return attachService.open2(fileId);
@@ -37,5 +43,11 @@ public class AttachController {
         Resource file = attachService.download(fileName);
         return ResponseEntity.ok().header(HttpHeaders.CONTENT_DISPOSITION,
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
+    }
+
+    @GetMapping("/pagination")
+    public ResponseEntity<Page<AttachDTO>> pagination(@RequestParam(value = "page", defaultValue = "1") Integer page,
+                                                      @RequestParam(value = "size", defaultValue = "5") Integer size) {
+        return ResponseEntity.ok(attachService.pagination(size, page-1));
     }
 }

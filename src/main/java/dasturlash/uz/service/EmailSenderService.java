@@ -6,7 +6,6 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -15,6 +14,8 @@ import org.springframework.stereotype.Service;
 public class EmailSenderService {
     @Value("${spring.mail.username}")
     private String fromAccount;
+    @Value("${localhost.api}")
+    private String api;
     @Autowired
     private JavaMailSender javaMailSender;
     @Autowired
@@ -40,7 +41,7 @@ public class EmailSenderService {
                 "  text-align: center;\n" +
                 "  text-decoration: none;\n" +
                 "  display: inline-block;\"\n" +
-                "  href=\"  http://localhost:7075/v1/auth/registration/email/verification/%s \">Ro'yhatdan\n" +
+                "  href=\" " +api+ "/v1/auth/registration/email/verification/%s \">Ro'yhatdan\n" +
                 "    o'tishni tugatish</a>\n" +
                 "\n" +
                 "\n" +

@@ -3,12 +3,18 @@ POST http://localhost:7075/attach/upload
 Content-Type: multipart/form-data; boundary=WebAppBoundary
 
 --WebAppBoundary
-Content-Disposition: form-data; name="file"; filename="mvp.jpg"
+Content-Disposition: form-data; name="file"; filename="dfghjk.jpg"
 
-< C:\Users\Admin\Desktop\mvp.jpg
+< D:\Umidjon\MVP's\dfghjk.jpg
 
 ### Open
-GET http://localhost:7075/attach/open/54ecf7c0-952c-4609-82f7-4b03a328f8ce.jpg
+GET http://localhost:7075/attach/open/0a4ac894-da5e-4155-bd3d-72c7e774de34.jpg
 
 ### Download
 GET http://localhost:7075/attach/download/54ecf7c0-952c-4609-82f7-4b03a328f8ce.jpg
+
+### Pagination
+GET localhost:7075/attach/pagination?page=1&size=2
+
+### Delete
+DELETE localhost:7075/attach/54ecf7c0-952c-4609-82f7-4b03a328f8ce.jpg
