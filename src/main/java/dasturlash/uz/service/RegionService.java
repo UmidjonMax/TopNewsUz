@@ -5,6 +5,7 @@ import dasturlash.uz.dto.RegionDTO;
 import dasturlash.uz.entity.RegionEntity;
 import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.exceptions.AppBadException;
+import dasturlash.uz.mapper.RegionMapper;
 import dasturlash.uz.repository.RegionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,11 +62,31 @@ public class RegionService {
         return dtos;
     }
 
-    public List<RegionDTO> getAllByLang(AppLanguageEnum lang){
-        Iterable<RegionEntity> regions = regionRepository.findAllSorted();
-        List<RegionDTO> dtos = new LinkedList<>();
-        regions.forEach(region -> dtos.add(toLangResponseDto(lang, region)));
-        return dtos;
+    public List<RegionDTO> getAllByLang(AppLanguageEnum lang) {
+        Iterable<RegionMapper> iterable = regionRepository.getByLang(lang.name());
+        List<RegionDTO> dtoList = new LinkedList<>();
+        iterable.forEach(mapper -> {
+            RegionDTO dto = new RegionDTO();
+            dto.setId(mapper.getId());
+            dto.setName(mapper.getName());
+            dto.setKey(mapper.getKey());
+            dtoList.add(dto);
+        });
+        return dtoList;
+    }
+
+    public RegionDTO getByIdAndLang(Integer id, AppLanguageEnum lang) {
+        Optional<RegionMapper> regionOp = regionRepository.getByIdAndLang(id, lang.name());
+        if (regionOp.isEmpty()) {
+            return null;
+        }
+        return regionOp.map(mapper -> {
+            RegionDTO dto = new RegionDTO();
+            dto.setId(mapper.getId());
+            dto.setName(mapper.getName());
+            dto.setKey(mapper.getKey());
+            return dto;
+        }).get();
     }
 
     public Function<RegionEntity, RegionDTO> toDTO() {
@@ -93,21 +114,9 @@ public class RegionService {
         };
     }
 
-    private RegionDTO toLangResponseDto(AppLanguageEnum lang, RegionEntity entity) {
-        RegionDTO dto = new RegionDTO();
-        dto.setId(entity.getId());
-        dto.setKey(entity.getKey());
-        switch (lang) {
-            case EN:
-                dto.setName(entity.getNameEn());
-                break;
-            case RU:
-                dto.setName(entity.getNameRu());
-                break;
-            case UZ:
-                dto.setName(entity.getNameUz());
-                break;
-        }
-        return dto;
+    public RegionEntity get(Integer id) {
+        return regionRepository.findById(id).orElseThrow(() -> {
+            throw new AppBadException("Item not found");
+        });
     }
 }

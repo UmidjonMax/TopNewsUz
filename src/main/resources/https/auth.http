@@ -14,6 +14,6 @@ POST localhost:7075/v1/auth/login
 Content-Type: application/json
 
 {
-  "username": "umidjonmax0001@gmail.com",
-  "password": "12345"
+  "username": "oda@gmail.com",
+  "password": "2345"
 }

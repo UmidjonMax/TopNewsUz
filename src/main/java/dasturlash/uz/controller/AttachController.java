@@ -28,7 +28,7 @@ public class AttachController {
         return ResponseEntity.ok(attachService.upload(file));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<String> delete(@PathVariable String id) {
         return ResponseEntity.ok(attachService.deletebyId(id));
     }
@@ -45,7 +45,7 @@ public class AttachController {
                 "attachment; filename=\"" + file.getFilename() + "\"").body(file);
     }
 
-    @GetMapping("/pagination")
+    @GetMapping("/admin/pagination")
     public ResponseEntity<Page<AttachDTO>> pagination(@RequestParam(value = "page", defaultValue = "1") Integer page,
                                                       @RequestParam(value = "size", defaultValue = "5") Integer size) {
         return ResponseEntity.ok(attachService.pagination(size, page-1));

@@ -1,9 +1,12 @@
 package dasturlash.uz.service;
 
 import dasturlash.uz.dto.CategoryDTO;
+import dasturlash.uz.dto.SectionDTO;
 import dasturlash.uz.entity.CategoryEntity;
 import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.exceptions.AppBadException;
+import dasturlash.uz.mapper.CategoryMapper;
+import dasturlash.uz.mapper.SectionMapper;
 import dasturlash.uz.repository.CategoryRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -65,6 +68,19 @@ public class CategoryService {
         List<CategoryDTO> dtos = new LinkedList<>();
         categories.forEach(category -> dtos.add(toLangResponseDto(lang, category)));
         return dtos;
+    }
+
+    public List<CategoryDTO> getCategoryListByArticleIdAndLang(String articleId, AppLanguageEnum lang) {
+        List<CategoryMapper> iterable = categoryRepository.getCategoryListByArticleIdAndLang(articleId, lang.name());
+        List<CategoryDTO> dtoList = new LinkedList<>();
+        iterable.forEach(mapper -> {
+            CategoryDTO dto = new CategoryDTO();
+            dto.setId(mapper.getId());
+            dto.setName(mapper.getName());
+            dto.setKey(mapper.getKey());
+            dtoList.add(dto);
+        });
+        return dtoList;
     }
 
     public Function<CategoryEntity, CategoryDTO> toDTO() {

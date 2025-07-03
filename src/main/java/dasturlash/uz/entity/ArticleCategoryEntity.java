@@ -5,16 +5,11 @@ import jakarta.persistence.*;
 import java.util.UUID;
 
 @Entity
+@Table(name = "article_category")
 public class ArticleCategoryEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-
-    @Column(name = "article_id")
-    private UUID articleId;
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "article_id", insertable = false, updatable = false)
-    private ArticleEntity article;
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private String id;
 
     @Column(name = "category_id")
     private Integer categoryId;
@@ -22,28 +17,18 @@ public class ArticleCategoryEntity {
     @JoinColumn(name = "category_id", insertable = false, updatable = false)
     private CategoryEntity category;
 
-    public Integer getId() {
+    @Column(name = "article_id")
+    private String articleId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "article_id", insertable = false, updatable = false)
+    private ArticleEntity article;
+
+    public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
-    }
-
-    public UUID getArticleId() {
-        return articleId;
-    }
-
-    public void setArticleId(UUID articleId) {
-        this.articleId = articleId;
-    }
-
-    public ArticleEntity getArticle() {
-        return article;
-    }
-
-    public void setArticle(ArticleEntity article) {
-        this.article = article;
     }
 
     public Integer getCategoryId() {
@@ -60,5 +45,21 @@ public class ArticleCategoryEntity {
 
     public void setCategory(CategoryEntity category) {
         this.category = category;
+    }
+
+    public String getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(String articleId) {
+        this.articleId = articleId;
+    }
+
+    public ArticleEntity getArticle() {
+        return article;
+    }
+
+    public void setArticle(ArticleEntity article) {
+        this.article = article;
     }
 }

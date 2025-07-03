@@ -1,5 +1,6 @@
 ### Create Section
-POST localhost:7075/v1/section
+POST localhost:7075/v1/section/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIiwiUk9MRV9NT0RFUkFUT1IiXSwidXNlcm5hbWUiOiJlc2htYXQzQGdtYWlsLmNvbSIsInN1YiI6ImVzaG1hdDNAZ21haWwuY29tIiwiaWF0IjoxNzUwNDM1NDc1LCJleHAiOjE3NTA1MjE4NzV9.TuwHmYHCDzW1tIla2N560VDP174Gf8PDmoXqDHhuGG0
 Content-Type: application/json
 
 {
@@ -11,4 +12,17 @@ Content-Type: application/json
 }
 
 ### Get
-GET localhost:7075/v1/section
+GET localhost:7075/v1/section/admin
+Authorization: Bearer
+
+### Update
+PUT localhost:7075/v1/section/admin/
+Authorization: Bearer
+
+### Delete
+DELETE localhost:7075/v1/section/admin/
+Authorization: Bearer
+
+### Get by lang
+GET localhost:7075/v1/section/lang
+Accept-Language:

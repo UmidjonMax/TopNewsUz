@@ -206,6 +206,13 @@ public class AttachService {
         });
     }
 
+    public AttachDTO openDTO(String id) {
+        AttachDTO attachDTO = new AttachDTO();
+        attachDTO.setUrl(api + "/api/v1/attach/open/" + id);
+        attachDTO.setId(id);
+        return attachDTO;
+    }
+
     public String openURL(String fileName) {
         return api + "/attach/open/" + fileName;
     }

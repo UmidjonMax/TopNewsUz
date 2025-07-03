@@ -4,6 +4,7 @@ import dasturlash.uz.dto.SectionDTO;
 import dasturlash.uz.entity.SectionEntity;
 import dasturlash.uz.enums.AppLanguageEnum;
 import dasturlash.uz.exceptions.AppBadException;
+import dasturlash.uz.mapper.SectionMapper;
 import dasturlash.uz.repository.SectionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -61,10 +62,29 @@ public class SectionService {
     }
 
     public List<SectionDTO> getAllByLang(AppLanguageEnum lang) {
-        Iterable<SectionEntity> sections = sectionRepository.findAllByOrderSorted();
-        List<SectionDTO> dtos = new LinkedList<>();
-        sections.forEach(section -> dtos.add(toLangResponseDto(lang, section)));
-        return dtos;
+        Iterable<SectionMapper> iterable = sectionRepository.getByLang(lang.name());
+        List<SectionDTO> dtoList = new LinkedList<>();
+        iterable.forEach(mapper -> {
+            SectionDTO dto = new SectionDTO();
+            dto.setId(mapper.getId());
+            dto.setName(mapper.getName());
+            dto.setKey(mapper.getKey());
+            dtoList.add(dto);
+        });
+        return dtoList;
+    }
+
+    public List<SectionDTO> getSectionListByArticleIdAndLang(String articleId, AppLanguageEnum lang) {
+        List<SectionMapper> iterable = sectionRepository.getSectionListByArticleIdAndLang(articleId, lang.name());
+        List<SectionDTO> dtoList = new LinkedList<>();
+        iterable.forEach(mapper -> {
+            SectionDTO dto = new SectionDTO();
+            dto.setId(mapper.getId());
+            dto.setName(mapper.getName());
+            dto.setKey(mapper.getKey());
+            dtoList.add(dto);
+        });
+        return dtoList;
     }
 
     public Function<SectionEntity, SectionDTO> toDTO() {
@@ -90,23 +110,5 @@ public class SectionService {
             sectionEntity.setKey(sectionDTO.getKey());
             return sectionEntity;
         };
-    }
-
-    private SectionDTO toLangResponseDto(AppLanguageEnum lang, SectionEntity entity) {
-        SectionDTO dto = new SectionDTO();
-        dto.setId(entity.getId());
-        dto.setKey(entity.getKey());
-        switch (lang) {
-            case EN:
-                dto.setName(entity.getNameEn());
-                break;
-            case RU:
-                dto.setName(entity.getNameRu());
-                break;
-            case UZ:
-                dto.setName(entity.getNameUz());
-                break;
-        }
-        return dto;
     }
 }

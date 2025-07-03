@@ -14,25 +14,19 @@ public class ArticleSectionService {
     @Autowired
     private ArticleSectionRepository articleSectionRepository;
 
-    public void create(UUID articleId, List<SectionDTO> sectionList) {
-        for (SectionDTO sectionDTO : sectionList) {
-            ArticleSectionEntity entity = new ArticleSectionEntity();
-            entity.setArticleId(articleId);
-            entity.setSectionId(sectionDTO.getId());
-            articleSectionRepository.save(entity);
-        }
+
+    public void merge(String articleId, List<SectionDTO> dtoList) {
+        List<Integer> newList = dtoList.stream().map(SectionDTO::getId).toList();
+
+        List<Integer> oldList = articleSectionRepository.getSectionIdListByArticleId(articleId);
+        newList.stream().filter(n -> !oldList.contains(n)).forEach(pe -> create(articleId, pe)); // create
+        oldList.stream().filter(old -> !newList.contains(old)).forEach(pe -> articleSectionRepository.deleteByArticleIdAndSectionId(articleId, pe));
     }
 
-    public void merge(UUID articleId, List<SectionDTO> newList) {
-        List<SectionDTO> oldList = articleSectionRepository.findSectionsByArticleId(articleId);
-        newList.stream().filter(n -> !oldList.contains(n)).forEach(sd -> create(articleId, sd));
-        oldList.stream().filter(old -> !newList.contains(old)).forEach(sd -> articleSectionRepository.deleteByArticleIdAndSectionId(articleId, sd.getId()));
-    }
-
-    public void create(UUID articleId, SectionDTO sectionDTO) {
+    public void create(String articleId, Integer sectionId) {
         ArticleSectionEntity entity = new ArticleSectionEntity();
         entity.setArticleId(articleId);
-        entity.setSectionId(sectionDTO.getId());
+        entity.setSectionId(sectionId);
         articleSectionRepository.save(entity);
     }
 }

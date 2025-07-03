@@ -95,14 +95,14 @@ public class AuthService {
         profiledto.setSurname(existProfile.getSurname());
         profiledto.setUsername(existProfile.getUsername());
         profiledto.setRoleList(profileRoleService.getByProfileId(existProfile.getId()));
-        profiledto.setJwt(existProfile.getUsername());
+        profiledto.setJwt(JWTUtil.encodeUsernameAndRole(existProfile.getUsername(), profiledto.getRoleList()));
         return profiledto;
     }
 
     public String regVerification(String jwt) {
         JwtDTO jwtDTO = null;
         try {
-            jwtDTO = JWTUtil.decode(jwt);
+            jwtDTO = JWTUtil.decodeUsernameAndRoles(jwt);
         } catch (ExpiredJwtException e) {
             throw new AppBadException("JWT Expired");
         } catch (JwtException e) {

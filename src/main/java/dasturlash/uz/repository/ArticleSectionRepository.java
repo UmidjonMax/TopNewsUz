@@ -12,12 +12,14 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface ArticleSectionRepository extends CrudRepository<ArticleSectionEntity, Integer> {
-    @Query("select section from ArticleSectionEntity where articleId =?1")
-    List<SectionDTO> findSectionsByArticleId(UUID articleId);
+public interface ArticleSectionRepository extends CrudRepository<ArticleSectionEntity, String> {
+    @Query("select sectionId from ArticleSectionEntity where articleId =?1")
+    List<Integer> getSectionIdListByArticleId(String articleId);
 
     @Transactional
     @Modifying
     @Query("DELETE from ArticleSectionEntity where articleId =?1 and sectionId =?2")
-    void deleteByArticleIdAndSectionId(UUID articleId,Integer sectionId);
+    void deleteByArticleIdAndSectionId(String articleId,Integer sectionId);
+
+
 }

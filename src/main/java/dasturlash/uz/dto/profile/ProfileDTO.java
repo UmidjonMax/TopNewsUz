@@ -1,6 +1,7 @@
 package dasturlash.uz.dto.profile;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import dasturlash.uz.dto.AttachDTO;
 import dasturlash.uz.enums.ProfileRoleEnum;
 import dasturlash.uz.enums.ProfileStatusEnum;
 import jakarta.validation.constraints.NotBlank;
@@ -8,6 +9,7 @@ import jakarta.validation.constraints.NotEmpty;
 
 import java.time.LocalDateTime;
 import java.util.List;
+
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class ProfileDTO {
     private Integer id;
@@ -22,7 +24,7 @@ public class ProfileDTO {
     @NotEmpty(message = "Role bo‘sh bo‘lmasligi kerak")
     private List<ProfileRoleEnum> roleList;
     private LocalDateTime createdDate;
-    private String photoId;
+    private AttachDTO photo;
     private String jwt;
 
     public String getJwt() {
@@ -89,11 +91,11 @@ public class ProfileDTO {
         this.createdDate = createdDate;
     }
 
-    public String getPhotoId() {
-        return photoId;
+    public AttachDTO getPhoto() {
+        return photo;
     }
 
-    public void setPhotoId(String photoId) {
-        this.photoId = photoId;
+    public void setPhoto(AttachDTO photo) {
+        this.photo = photo;
     }
 }

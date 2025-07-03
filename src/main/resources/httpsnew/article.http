@@ -1,0 +1,40 @@
+### Registration using Email
+POST localhost:7075/v1/article/moderator
+Authorization: Bearer {{jwt}}
+Content-Type: application/json
+
+{
+  "title": "Article title 6",
+  "description": "Article 4 description",
+  "content": "Article 4 content",
+  "imageId": "623ffa97-b690-4eb6-9205-2d5c7dee912b.jpg",
+  "regionId": 1,
+  "readTime": 180,
+  "categoryList": [
+    {
+      "id": 1
+    },
+    {
+      "id": 2
+    }
+  ],
+  "sectionList": [
+    {
+      "id": 1
+    },
+    {
+      "id": 2
+    }
+  ]
+}
+
+### last n section
+GET localhost:7075/v1/article/last-n-by-section?quantity=2&sectionId=1
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIiwiUk9MRV9NT0RFUkFUT1IiXSwidXNlcm5hbWUiOiJlc2htYXQzQGdtYWlsLmNvbSIsInN1YiI6ImVzaG1hdDNAZ21haWwuY29tIiwiaWF0IjoxNzUwNjExMzQ3LCJleHAiOjE3NTA2OTc3NDd9.LVNcn-EOze0hzTE8ry2svQquZgu4yQNX_tpoDfGhmUo
+
+###change status
+PUT localhost:7075/v1/article/publisher/status?id=dfa61e15-cd40-4e4d-bcbd-4290ff179dca&status=PUBLISHED
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIiwiUk9MRV9NT0RFUkFUT1IiXSwidXNlcm5hbWUiOiJlc2htYXQzQGdtYWlsLmNvbSIsInN1YiI6ImVzaG1hdDNAZ21haWwuY29tIiwiaWF0IjoxNzUwNjExMzQ3LCJleHAiOjE3NTA2OTc3NDd9.LVNcn-EOze0hzTE8ry2svQquZgu4yQNX_tpoDfGhmUo
+
+### Get by section
+GET http://localhost:7075/v1/article/last-n-by-section?sectionId=2&quantity=3

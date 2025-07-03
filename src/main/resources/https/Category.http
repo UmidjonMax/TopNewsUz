@@ -1,8 +1,10 @@
 ### Get Categories
-GET localhost:7075/v1/category
+GET localhost:7075/v1/category/admin
+Authorization: Bearer
 
 ### Create category
-POST localhost:7075/v1/category
+POST localhost:7075/v1/category/admin
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX0FETUlOIl0sInVzZXJuYW1lIjoidW1pZGpvbm1heDAwMDFAZ21haWwuY29tIiwic3ViIjoidW1pZGpvbm1heDAwMDFAZ21haWwuY29tIiwiaWF0IjoxNzUwNDM1MzY5LCJleHAiOjE3NTA1MjE3Njl9.Ge_jf4yzAX00oaT2GoHwUEgkGJR9KXXqGFCka1nBhKw
 Content-Type: application/json
 
 {
@@ -14,7 +16,8 @@ Content-Type: application/json
 }
 
 ### Update Category
-PUT localhost:7075/v1/category/1
+PUT localhost:7075/v1/category/admin/1
+Authorization: Bearer
 Content-Type: application/json
 
 {
@@ -26,7 +29,8 @@ Content-Type: application/json
 }
 
 ### Delete Category
-DELETE localhost:7075/v1/category/4
+DELETE localhost:7075/v1/category/admin/4
+Authorization: Bearer
 
 ### Get By Language
 GET localhost:7075/v1/category/lang

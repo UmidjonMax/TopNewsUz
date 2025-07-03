@@ -16,22 +16,22 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @PostMapping("")
+    @PostMapping("/admin")
     public ResponseEntity<CategoryDTO> create(@Valid @RequestBody CategoryDTO dto) {
         return ResponseEntity.ok(categoryService.create(dto));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping("/admin/{id}")
     public ResponseEntity<CategoryDTO> update(@PathVariable("id") Integer id, @RequestBody CategoryDTO dto) {
         return ResponseEntity.ok(categoryService.update(id, dto));
     }
 
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/admin/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable("id") Integer id) {
         return ResponseEntity.ok(categoryService.delete(id));
     }
 
-    @GetMapping("")
+    @GetMapping("/admin")
     public ResponseEntity<List<CategoryDTO>> getAll() {
         return ResponseEntity.ok(categoryService.getAll());
     }

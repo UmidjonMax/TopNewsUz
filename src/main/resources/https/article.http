@@ -1,5 +1,6 @@
 ### Create Article
-POST localhost:7075/v1/article
+POST localhost:7075/v1/article/moderator
+Authorization: Bearer
 Content-Type: application/json
 
 {
@@ -17,7 +18,8 @@ Content-Type: application/json
 }
 
 ###Update
-PUT localhost:7075/v1/article/ca53c14a-f08c-4104-96b2-81ed96dab139
+PUT localhost:7075/v1/article/moderator/ca53c14a-f08c-4104-96b2-81ed96dab139
+Authorization: Bearer
 Content-Type: application/json
 
 {
@@ -34,10 +36,15 @@ Content-Type: application/json
   ]
 }
 
+### Delete article
+DELETE localhost:7075/v1/article/moderator/
+Authorization: Bearer
+
 ### Change Status
-PUT localhost:7075/v1/article/status
+PUT localhost:7075/v1/article/publisher/status
+Authorization: Bearer
 Content-Type: application/json
 
 {
-  ""
+
 }

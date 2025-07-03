@@ -1,40 +1,34 @@
 ### Create
-POST localhost:7075/v1/profile
+POST localhost:7075/v1/profile/admin
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInVzZXJuYW1lIjoib2RhQGdtYWlsLmNvbSIsInN1YiI6Im9kYUBnbWFpbC5jb20iLCJpYXQiOjE3NTAxNzA0MTAsImV4cCI6MTc1MDI1NjgxMH0.qMQ2H0KUIhBjQJuDMLwRqNtBJw-o9LKtANFk9kdQo1U
 
 {
-  "name": "Elbek",
-  "surname": "Kiselev",
-  "username": "elka@gmail.com",
-  "password": "2345",
+  "name": "chilavek",
+  "surname": "insonaliyev",
+  "username": "cheliks@gmail.com",
+  "password": "1234",
   "roleList": [
-    "ROLE_USER"
-  ]
+    "ROLE_ADMIN",
+    "ROLE_MODERATOR"]
 }
 
 ### Get All
-GET localhost:7075/v1/profile/page?page=1&size=3
-
-### Login
-POST localhost:7075/v1/profile/login
-Content-Type: application/json
-
-{
-  "username": "+998900031904",
-  "password": "190204"
-}
-
+GET localhost:7075/v1/profile/admin/page?page=1&size=10
+Authorization: Bearer
 
 ### Update
-PUT localhost:7075/v1/profile/update
+PUT localhost:7075/v1/profile/admin/update/41
+Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJyb2xlcyI6WyJST0xFX1VTRVIiLCJST0xFX0FETUlOIl0sInVzZXJuYW1lIjoib2RhQGdtYWlsLmNvbSIsInN1YiI6Im9kYUBnbWFpbC5jb20iLCJpYXQiOjE3NTAxODUzNTIsImV4cCI6MTc1MDI3MTc1Mn0.dYdND7RZ8FFas07-XtWEXGOtJ7Itd8mUU1zJUWciBq8
 Content-Type: application/json
 
 {
-  "name": "Toshmat",
-  "surname": "Toshmatov",
-  "username": "toshmat@gmail.com",
-  "rolesList": [
-    "ROLE_USER",
-    "ROLE_MODERATOR"
-  ]
+  "name": "chilavek",
+  "surname": "insonaliyev",
+  "username": "cheliks@gmail.com",
+  "password": "1234",
+  "roleList": [
+    "ROLE_ADMIN",
+    "ROLE_MODERATOR",
+  "ROLE_PUBLISH"]
 }

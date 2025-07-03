@@ -15,17 +15,17 @@ public class ProfileController {
     @Autowired
     private ProfileService profileService;
 
-    @PostMapping("")
+    @PostMapping("/admin")
     public ResponseEntity<ProfileDTO> create(@Valid @RequestBody ProfileDTO dto) {
         return ResponseEntity.ok(profileService.create(dto));
     }
 
-    @PutMapping("/update")
+    @PutMapping("/admin/update")
     public ResponseEntity<ProfileDTO> update(@PathVariable("id") Integer id, @Valid @RequestBody ProfileUpdateDTO dto) {
         return ResponseEntity.ok(profileService.update(id, dto));
     }
 
-    @GetMapping("/page")
+    @GetMapping("/admin/page")
     public ResponseEntity<Page<ProfileDTO>> getPage(@RequestParam(value = "page", defaultValue = "1") int page,
                                                     @RequestParam(value = "size", defaultValue = "2") int size) {
         return ResponseEntity.ok(profileService.getAll(page-1, size));
